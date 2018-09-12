@@ -1,4 +1,6 @@
-package exceptions
+package errors
+
+
 
 type HttpError struct {
 	Code    int

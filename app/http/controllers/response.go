@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"gitlab.singulato.com/neltharion/virtual-car/app/errno"
+	"github.com/locxiang/quantitative-trading/app/errors"
 )
 
 
@@ -12,12 +12,11 @@ type Response struct {
 	Data    interface{} `json:"data"`
 }
 
-func SendResponse(c *gin.Context, err error, data interface{}, status int) {
-	code, message := errno.DecodeErr(err)
+func SendResponse(c *gin.Context, err *errors.HttpError, data interface{}, status int) {
 	// always return http.StatusOK
 	c.JSON(status, Response{
-		Code:    code,
-		Message: message,
+		Code:    err.Code,
+		Message: err.Message,
 		Data:    data,
 	})
 }
