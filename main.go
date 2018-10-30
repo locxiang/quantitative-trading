@@ -11,6 +11,11 @@ import (
 	"github.com/locxiang/quantitative-trading/app/routers"
 	"github.com/locxiang/quantitative-trading/app/http/middleware"
 	"net/http"
+	"github.com/locxiang/quantitative-trading/exchange/binance"
+	poolService "github.com/locxiang/quantitative-trading/app/services/pool"
+
+	strategyService "github.com/locxiang/quantitative-trading/app/services/strategy"
+	"github.com/locxiang/quantitative-trading/app/influxdb"
 )
 
 var (
@@ -36,10 +41,24 @@ func main() {
 	}
 	defer models.CloseDB()
 
+	if err := influxdb.Init(); err != nil {
+		log.Fatal("influxdb连接失败", err)
+	}
+
 	//TODO 数据库初始化
 	database.MigrationData()
 
+	//TODO 启动数据池
+	poolService.Init()
 
+	//TODO 启动策略服务
+	strategyService.Init()
+
+	//TODO 启动交易所服务
+	done := binance.Init()
+	defer func() {
+		done <- struct{}{}
+	}()
 
 	//启动http服务
 	gin.SetMode(setting.Env().RunMode)

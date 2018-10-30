@@ -9,6 +9,8 @@ import (
 	"github.com/locxiang/quantitative-trading/app/http/middleware"
 	"github.com/locxiang/quantitative-trading/app/http/controllers/user"
 	"github.com/locxiang/quantitative-trading/app/errors"
+	"github.com/locxiang/quantitative-trading/app/http/controllers/pool"
+	"github.com/locxiang/quantitative-trading/app/http/controllers/strategy"
 )
 
 // Load loads the middlewares, routes, handlers.
@@ -36,6 +38,9 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		route.GET("sd/health", check.HealthCheck)
 
 		route.GET("users", user.GetAll)
+		route.GET("pools", pool.GetAll)
+		route.GET("strategies", strategy.GetAll)
+		route.GET("profits", strategy.ProfitList)
 
 	}
 

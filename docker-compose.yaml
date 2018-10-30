@@ -10,3 +10,17 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123123
     restart: always
+
+  some-influxdb-grafana:
+    image: philhawthorne/docker-influxdb-grafana:edge
+    volumes:
+      - ./influxdb:/var/lib/influxdb
+      - ./grafana:/var/lib/grafana
+    ports:
+      - 3003:3003
+      - 3004:8888
+      - 8086:8086
+##
+##Username: root
+#Password: root
+#Port: 8086

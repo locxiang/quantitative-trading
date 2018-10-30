@@ -4,6 +4,7 @@ import (
 	"math/rand"
 	"strconv"
 	"time"
+	"math"
 )
 
 const (
@@ -12,6 +13,16 @@ const (
 	KC_RAND_KIND_UPPER = 2 // 大写字母
 	KC_RAND_KIND_ALL   = 3 // 数字、大小写字母
 )
+
+func init() {
+	rand.NewSource(time.Now().Unix())
+}
+
+//保留小数位
+func Round(f float64, n int) float64 {
+	pow10N := math.Pow10(n)
+	return math.Trunc((f+0.5/pow10N)*pow10N) / pow10N
+}
 
 //Krand 随机字符串
 func Krand(size int, kind int) []byte {

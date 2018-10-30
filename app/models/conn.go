@@ -41,7 +41,8 @@ func Conn() error {
 
 	log.Infof("数据库连接成功：%s", conf.Host)
 
-	DB.LogMode(true)
+	t := setting.Env().RunMode == "debug"
+	DB.LogMode(t)
 	DB.SingularTable(true)
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(100)

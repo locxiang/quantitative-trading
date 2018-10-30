@@ -21,3 +21,5 @@ config/config.yaml
 /storage/log/*.key
 mysql/
 logs/
+grafana/
+influxdb/

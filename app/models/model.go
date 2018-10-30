@@ -8,12 +8,17 @@ import (
 
 type BaseModel struct {
 	Id        uint64 `gorm:"primary_key;unique_index;AUTO_INCREMENT;column:id" json:"id"`
-	CreatedAt int64  `gorm:"column:created_at" json:"created_at"`
-	UpdatedAt int64  `gorm:"column:updated_at" json:"updated_at"`
+	CreatedOn int64  `gorm:"column:created_on" json:"created_on"`
+	UpdatedOn int64  `gorm:"column:updated_on" json:"updated_on"`
 }
 
 func (u *BaseModel) BeforeCreate(scope *gorm.Scope) error {
-	scope.SetColumn("CreatedAt", util.Time2Millisecond(time.Now()))
-	scope.SetColumn("UpdatedAt", util.Time2Millisecond(time.Now()))
+	scope.SetColumn("CreatedOn", util.Time2Millisecond(time.Now()))
+	scope.SetColumn("UpdatedOn", util.Time2Millisecond(time.Now()))
+	return nil
+}
+
+func (u *BaseModel) BeforeUpdate(scope *gorm.Scope) (err error) {
+	scope.SetColumn("UpdatedOn", util.Time2Millisecond(time.Now()))
 	return nil
 }

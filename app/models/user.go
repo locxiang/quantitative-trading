@@ -1,14 +1,13 @@
-package user
+package models
 
 import (
-	"github.com/locxiang/quantitative-trading/app/models"
 	"github.com/jinzhu/gorm"
 	"github.com/locxiang/quantitative-trading/app/util"
 	"github.com/lexkong/log"
 )
 
 type User struct {
-	models.BaseModel
+	BaseModel
 	UserName string `gorm:"column:username;not null;unique_index;type:varchar(50);" json:"username"`
 	Password string `gorm:"column:password" json:"password"`
 }
@@ -20,14 +19,14 @@ func (u *User) TableName() string {
 //数据迁移
 func (u *User) Migrate() {
 
-	exist := models.DB.HasTable(u)
+	exist := DB.HasTable(u)
 	if exist {
 		return
 	}
 	log.Infof("创建数据表：%s", u.TableName())
 
 	//建表
-	models.DB.AutoMigrate(u)
+	DB.AutoMigrate(u)
 
 	//TODO  导入数据
 
@@ -36,7 +35,7 @@ func (u *User) Migrate() {
 		Password: "123123",
 	}
 
-	models.DB.Create(user1)
+	DB.Create(user1)
 
 }
 
