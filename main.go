@@ -11,11 +11,11 @@ import (
 	"github.com/locxiang/quantitative-trading/app/routers"
 	"github.com/locxiang/quantitative-trading/app/http/middleware"
 	"net/http"
-	"github.com/locxiang/quantitative-trading/exchange/binance"
 	poolService "github.com/locxiang/quantitative-trading/app/services/pool"
 
 	strategyService "github.com/locxiang/quantitative-trading/app/services/strategy"
 	"github.com/locxiang/quantitative-trading/app/influxdb"
+	"github.com/locxiang/quantitative-trading/exchange"
 )
 
 var (
@@ -55,10 +55,7 @@ func main() {
 	strategyService.Init()
 
 	//TODO 启动交易所服务
-	done := binance.Init()
-	defer func() {
-		done <- struct{}{}
-	}()
+	exchange.Start()
 
 	//启动http服务
 	gin.SetMode(setting.Env().RunMode)

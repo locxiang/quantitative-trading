@@ -2,21 +2,13 @@ package huobi_test
 
 import (
 	"github.com/locxiang/quantitative-trading/app/pkg/Initialization"
-	"time"
 	"testing"
-	"github.com/locxiang/quantitative-trading/exchange/huobi"
 	"strings"
-	"github.com/locxiang/GoEx"
+	"github.com/nntaoli-project/GoEx"
 )
 
 func init() {
 	Initialization.ServerInit()
-}
-
-func TestInit(t *testing.T) {
-	huobi.Init()
-
-	time.Sleep(59 * time.Second)
 }
 
 func TestM(t *testing.T) {

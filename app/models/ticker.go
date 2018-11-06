@@ -11,7 +11,7 @@ type Ticker struct {
 	BaseModel
 	Exchange string  `json:"exchange"`
 	Symbol   string  `gorm:"not null;index:idx_symbol;type:varchar(20);" json:"symbol"`
-	Last     float64 `json:"last"`    //最新价格
+	Last     float64 `json:"last"` //最新价格
 	Buy      float64 `json:"buy"`
 	Sell     float64 `json:"sell"`
 	High     float64 `json:"high"`
@@ -36,7 +36,6 @@ func (t *Ticker) InsertTSDB() error {
 		"vol":   t.Vol,
 	}
 
-	var pts []*client.Point
 
 	dateTime := util.Millisecond2Time(int64(t.Date))
 	fmt.Printf("timestamp to datetime:%v\n", dateTime)
@@ -45,11 +44,8 @@ func (t *Ticker) InsertTSDB() error {
 	if err != nil {
 		return err
 	}
-	pts = append(pts, pt)
 
-	if err := influxdb.Write(pts...); err != nil {
-		return err
-	}
+	influxdb.PointsChan <- pt
 
 	return nil
 

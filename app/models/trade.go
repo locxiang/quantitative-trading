@@ -3,7 +3,7 @@ package models
 import (
 	"github.com/lexkong/log"
 	"strings"
-	"github.com/go-ffmt/ffmt"
+	"fmt"
 	"github.com/influxdata/influxdb/client/v2"
 	"github.com/locxiang/quantitative-trading/app/util"
 	"github.com/locxiang/quantitative-trading/app/influxdb"
@@ -25,8 +25,8 @@ type Trade struct {
 }
 
 const (
-	OrderSell = "Sell"
-	OrderBuy  = "Buy"
+	OrderSell = "SELL"
+	OrderBuy  = "BUY"
 )
 
 
@@ -68,14 +68,13 @@ func (t *Trade) InsertTSDB() error {
 	utcTime := util.Millisecond2Time(t.Timestamp)
 	pt, err := client.NewPoint("test_trade", tags, fields, utcTime)
 	if err != nil {
+		fmt.Printf("NewPoint err %s", err)
 		return err
 	}
-	ffmt.P(pt)
 	pts = append(pts, pt)
 
-	if err := influxdb.Write(pts...); err != nil {
-		return err
-	}
+	influxdb.PointsChan <- pt
+
 
 	return nil
 
